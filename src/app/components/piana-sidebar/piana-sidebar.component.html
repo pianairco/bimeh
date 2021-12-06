@@ -1,0 +1,48 @@
+<nav id="sidebar bg-piana-main" class="sidebar" [@slide]="getState2()">
+  <!--  [ngClass]="{'sidebar-bg' : hasBackgroundImage()}"-->
+  <div class="sidebar-content" >
+    <perfect-scrollbar
+      *ngIf="!sidebarservice.getSidebarState()"
+      style="padding-top: 0px;">
+      <div class="sidebar-header text-center">
+        <p style="color: white;" class="text-center">سامانه رایان هم افزا</p>
+      </div>
+
+      <div class="sidebar-profile" *ngIf="!sidebarservice.getSidebarState()">
+        <div class="user-info">
+          <span class="user-name">
+            <span style="border: 1px solid #ddedfc; color: black; border-radius: 16px; padding-left: 10px; padding-bottom: 3px; padding-top: 3px; background-color: #FFD07A">
+              <i class="far fa-user"
+                 style="background-color: black; color: white; border-radius: 10px;
+                  padding: 3px; margin-left: 4px"></i>نام کاربری
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="sidebar-menu" style="overflow: hidden">
+        <ul >
+          <ng-container *ngFor="let menu of menus" >
+            <li *ngIf="menu.type != 'dropdown'"
+                [ngClass]="{'active': menu.active , 'sidebar-dropdown':menu.type === 'dropdown' , 'header-menu':menu.type === 'header'}">
+              <span *ngIf="menu.type === 'header'">{{menu.title}}</span>
+              <a *ngIf="menu.type == 'dropdown'" (click)='toggle(menu)'>
+                <i class="{{menu.icon}}"></i>
+                <span>{{menu.title}}</span>
+                <span *ngIf="menu.badge" class="badge badge-pill" [ngClass]="menu.badge.class">{{menu.badge.text}}</span>
+              </a>
+              <a *ngIf="menu.type == 'simple' && menu.hasOwnProperty('link')"  [routerLink]="[menu['link']]">
+                <i class="{{menu.icon}}"></i>
+                <span>{{menu.title}}</span>
+                <span *ngIf="menu.badge" class="badge badge-pill" [ngClass]="menu.badge.class">{{menu.badge.text}}</span>
+              </a>
+            </li>
+            <ng-container *ngIf="menu.type === 'dropdown'">
+              <app-piana-dropdown [menu]="menu" [menus]="menus"></app-piana-dropdown>
+            </ng-container>
+          </ng-container>
+        </ul>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</nav>
